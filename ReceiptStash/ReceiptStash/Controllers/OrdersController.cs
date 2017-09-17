@@ -13,16 +13,12 @@ namespace ReceiptStash.Controllers
     [Route("[controller]")]
     public class OrdersController : Controller
     {
-        /**
-        Implement dependency injection first
+        private IDatabaseModel _database;
 
-        private IDatabaseModel database;
-
-        public OrdersController (DatabaseModel database)
+        public OrdersController (IDatabaseModel database)
         {
-            this.database = database;
+            _database = database;
         }
-    */
 
         // GET orders/1/1
         // Returns the order identified by orderID if the account identified by userID is authenticated
@@ -32,8 +28,7 @@ namespace ReceiptStash.Controllers
         {
             // do token authentication stuff with userID
 
-            IDatabaseModel database = new DatabaseModel();
-            return Success(database.GetRecords(orderID));
+            return Success(_database.GetRecords(orderID));
         }
 
         // GET orders/1
@@ -42,8 +37,7 @@ namespace ReceiptStash.Controllers
         [HttpGet("{userID}")]
         public string GetAllOrders(int userID)
         {
-            IDatabaseModel database = new DatabaseModel();
-            return Success(database.GetAllRecords(userID));
+            return Success(_database.GetAllRecords(userID));
         }
 
         // GET orders/1/recent/3
@@ -52,8 +46,7 @@ namespace ReceiptStash.Controllers
         [HttpGet("{userID}/recent/{lastOrderID}")]
         public string GetRecentOrders(int userID, int lastOrderID)
         {
-            IDatabaseModel database = new DatabaseModel();
-            return Success(database.GetRecentRecords(userID, lastOrderID));
+            return Success(_database.GetRecentRecords(userID, lastOrderID));
         }
 
         // POST orders
@@ -62,8 +55,7 @@ namespace ReceiptStash.Controllers
         [HttpPost("{orderID}")]
         public string LinkTransaction(int orderID, [FromBody]PostDataModel data)
         {
-            IDatabaseModel database = new DatabaseModel();
-            if (database.TransferRecords(data.userID, orderID))
+            if (_database.TransferRecords(data.userID, orderID))
                 return Success(null);
             else
                 return Failure();
@@ -74,8 +66,7 @@ namespace ReceiptStash.Controllers
         [HttpPost]
         public string AddOrder([FromBody]OrderModel order)
         {
-            IDatabaseModel database = new DatabaseModel();
-            if (database.AddRecords(order))
+            if (_database.AddRecords(order))
                 return Success(null);
             else
                 return Failure();
