@@ -1,0 +1,50 @@
+
+
+button:hover {
+	opacity: 0.6;
+}
+
+
+input[type=text], input[type=password] {
+	width: 20%;
+	padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+.container3 {
+	position: relative; left: 20px;
+}
+body {
+background: url(hypnotize.png) repeat 0 0;
+}
+
+.wholeform {
+	position: relative; top: 220px;
+}
+
+.Logo {
+	position: relative;
+	position: absolute; top: 0; left: 0;
+
+}
+
+#trueimage
+{
+	width: 200px;
+	height:auto;
+	position: relative; left: 630px;
+	
+}
+#trueimage:hover {
+	opacity: 0.6;
+}
+
+
+	
+
+
+
+	
+	
