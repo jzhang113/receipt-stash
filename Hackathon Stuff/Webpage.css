@@ -1,9 +1,5 @@
 
-.Main { 
-	font-family: Helvetica, "Times New Roman", Times, serif;
-	
 
-}
 body {
 background: url(hypnotize.png) repeat 0 0;
 }
@@ -55,11 +51,12 @@ background: url(hypnotize.png) repeat 0 0;
 	
 }
 
-.menu {
+.Menu {
 	font-family: "Bookman Old Style";
 	font-style: normal;
 	font-variant: normal;
-	font-weight: 350;
+	font-weight: 450;
+	font-size: 1.5em;
 	
 }
 

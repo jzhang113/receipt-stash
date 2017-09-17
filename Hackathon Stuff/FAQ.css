@@ -9,21 +9,14 @@
 
 	}
 
-.h3 {
-	font-family: "Bookman Old Style";
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 300;
-}
-body {
-background: url(hypnotize.png) repeat 0 0;
-}
 .Logo
 {
 	position: relative;
 	position: absolute; top: 0; left: 0;
 }
-	
+body {
+background: url(hypnotize.png) repeat 0 0;
+}
 #trueimage
 {
 	width: 250px;
@@ -34,6 +27,7 @@ background: url(hypnotize.png) repeat 0 0;
 #trueimage:hover {
 	opacity: 0.6;
 }
+
 .Myaccount{
 	
 	overflow: auto;
@@ -51,9 +45,4 @@ background: url(hypnotize.png) repeat 0 0;
 }
 .Myaccount p:active {
 	color: #5ED1F5;
-}
-#christianimage {
-	
-	max-width: 1000px;
-	max-height: auto;
 }
