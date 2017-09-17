@@ -6,7 +6,7 @@ namespace ReceiptStash.Models
     {
         bool AddRecords(OrderModel order);
         bool TransferRecords(int userID, int orderID);
-        IEnumerable<OrderModel> GetRecords(int orderID);
+        IEnumerable<OrderModel> GetRecords(int userID, int orderID);
         IEnumerable<OrderModel> GetAllRecords(int userID);
         IEnumerable<OrderModel> GetRecentRecords(int userID, int orderID);
     }

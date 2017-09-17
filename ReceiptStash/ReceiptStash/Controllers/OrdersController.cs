@@ -28,7 +28,12 @@ namespace ReceiptStash.Controllers
         {
             // do token authentication stuff with userID
 
-            return Success(_database.GetRecords(orderID));
+            IEnumerable<OrderModel> records = _database.GetRecords(userID, orderID);
+
+            if (records != null)
+                return Success(records);
+            else
+                return Failure();
         }
 
         // GET orders/1
@@ -37,7 +42,14 @@ namespace ReceiptStash.Controllers
         [HttpGet("{userID}")]
         public string GetAllOrders(int userID)
         {
-            return Success(_database.GetAllRecords(userID));
+            // authentication
+
+            IEnumerable<OrderModel> records = _database.GetAllRecords(userID);
+
+            if (records != null)
+                return Success(records);
+            else
+                return Failure();
         }
 
         // GET orders/1/recent/3
@@ -46,7 +58,14 @@ namespace ReceiptStash.Controllers
         [HttpGet("{userID}/recent/{lastOrderID}")]
         public string GetRecentOrders(int userID, int lastOrderID)
         {
-            return Success(_database.GetRecentRecords(userID, lastOrderID));
+            // authentication
+
+            IEnumerable<OrderModel> records = _database.GetRecentRecords(userID, lastOrderID);
+
+            if (records != null)
+                return Success(records);
+            else
+                return Failure();
         }
 
         // POST orders
@@ -62,7 +81,7 @@ namespace ReceiptStash.Controllers
         }
 
         // POST orders
-        // Adds a new order to the orders table
+        // Adds a new transaction to the orders table
         [HttpPost]
         public string AddOrder([FromBody]OrderModel order)
         {

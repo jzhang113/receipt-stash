@@ -73,14 +73,23 @@ namespace ReceiptStash.Models
             }
         }
 
-        public IEnumerable<OrderModel> GetRecords(int orderID)
+        public IEnumerable<OrderModel> GetRecords(int userID, int orderID)
         {
+            if (!QueryExists("SELECT EXISTS(SELECT 1 FROM users WHERE id=@0);", userID) || !QueryExists("SELECT EXISTS(SELECT 1 FROM orders WHERE id=@0);", orderID))
+                return null;
+
+            if (!QueryExists("SELECT EXISTS(SELECT 1 from userorders where user_id=@0 and order_id=@1);", userID, orderID))
+                return null;
+
             return Query("SELECT * " +
                 "FROM orders WHERE id=@0;", orderID);
         }
 
         public IEnumerable<OrderModel> GetAllRecords(int userID)
         {
+            if (!QueryExists("SELECT EXISTS(SELECT 1 FROM users WHERE id=@0);", userID))
+                return null;
+
             return Query("SELECT orders.* " +
                 "FROM userorders " +
                 "JOIN orders ON order_id = orders.id " +
@@ -89,6 +98,9 @@ namespace ReceiptStash.Models
 
         public IEnumerable<OrderModel> GetRecentRecords(int userID, int orderID)
         {
+            if (!QueryExists("SELECT EXISTS(SELECT 1 FROM users WHERE id=@0);", userID))
+                return null;
+
             return Query("SELECT orders.* " +
                 "FROM userorders " +
                 "JOIN orders ON order_id = orders.id " +
