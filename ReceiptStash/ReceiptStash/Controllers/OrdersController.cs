@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ReceiptStash.Models;
 using Newtonsoft.Json;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Microsoft.AspNetCore.Authorization;
 
 namespace ReceiptStash.Controllers
 {
     [Route("[controller]")]
+    [RestAuthorize]
     public class OrdersController : Controller
     {
         private IDatabaseModel _database;
