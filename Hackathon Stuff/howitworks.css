@@ -1,0 +1,54 @@
+.Title
+{
+	font-family: "Bookman Old Style";
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	font-size: 3em;
+	
+
+	}
+
+.h3 {
+	font-family: "Bookman Old Style";
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 300;
+}
+body {
+background: url(hypnotize.png) repeat 0 0;
+}
+.Logo
+{
+	position: relative;
+	position: absolute; top: 0; left: 0;
+}
+	
+#trueimage
+{
+	width: 250px;
+	height:auto;
+	
+	
+}
+#trueimage:hover {
+	opacity: 0.6;
+}
+.Myaccount{
+	
+	overflow: auto;
+}
+.Myaccount p {
+	position: relative; width: 250px;
+	position: absolute; top: 0; right: 20px; width: 100px; text-align:center;
+	background-color: lightgray;
+	float: left;
+	padding: 10px;
+}
+.Myaccount p:hover {
+	background-color: gray;
+	color: lightgray;
+}
+.Myaccount p:active {
+	color: #5ED1F5;
+}
