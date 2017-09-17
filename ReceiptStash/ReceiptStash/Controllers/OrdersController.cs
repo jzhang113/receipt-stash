@@ -5,12 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ReceiptStash.Models;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ReceiptStash.Controllers
 {
     [Route("[controller]")]
-    [RestAuthorize]
+    [RESTAuthorize]
     public class OrdersController : Controller
     {
         private IDatabaseModel _database;

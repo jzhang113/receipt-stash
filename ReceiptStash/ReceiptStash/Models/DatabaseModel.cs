@@ -6,7 +6,7 @@ namespace ReceiptStash.Models
 {
     public class DatabaseModel : IDatabaseModel
     {
-        private static string connectionString = "server=localhost;user=root;database=receipt_stash;password=aype9akp3;SslMode=none";
+        private const string _connectionString = "server=localhost;user=root;database=receipt_stash;password=aype9akp3;SslMode=none";
 
         public bool AddRecords(OrderModel order)
         {
@@ -16,7 +16,7 @@ namespace ReceiptStash.Models
 
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                using (MySqlConnection conn = new MySqlConnection(_connectionString))
                 using (MySqlCommand sqlCmd = new MySqlCommand(cmd, conn))
                 {
                     conn.Open();
@@ -53,7 +53,7 @@ namespace ReceiptStash.Models
 
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                using (MySqlConnection conn = new MySqlConnection(_connectionString))
                 using (MySqlCommand sqlCmd = new MySqlCommand(cmd, conn))
                 {
                     conn.Open();
@@ -107,11 +107,11 @@ namespace ReceiptStash.Models
                 "WHERE user_id=@0 AND order_id>@1;", userID, orderID);
         }
 
-        private IEnumerable<OrderModel> Query(string cmd, params dynamic[] args)
+        internal static IEnumerable<OrderModel> Query(string cmd, params dynamic[] args)
         {
             ICollection<OrderModel> orderList = new List<OrderModel>();
 
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlConnection conn = new MySqlConnection(_connectionString))
             using (MySqlCommand sqlCmd = new MySqlCommand(cmd, conn))
             {
                 conn.Open();
@@ -143,9 +143,9 @@ namespace ReceiptStash.Models
             return orderList;
         }
 
-        private bool QueryExists(string cmd, params dynamic[] args)
+        internal static bool QueryExists(string cmd, params dynamic[] args)
         {
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlConnection conn = new MySqlConnection(_connectionString))
             using (MySqlCommand sqlCmd = new MySqlCommand(cmd, conn))
             {
                 conn.Open();

@@ -2,11 +2,13 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Net.Http;
+using MySql.Data.MySqlClient;
 
 namespace ReceiptStash.Models
 {
     public class AuthorizationModel
     {
+        private const string _connectionString = "server=localhost;user=root;database=receipt_stash;password=aype9akp3;SslMode=none";
         private const string _alg = "HmacSHA256";
         private const string _salt = "jgONPHkiTFnjCamNtgor";
         private const int _expirationMinutes = 30;
@@ -65,16 +67,38 @@ namespace ReceiptStash.Models
 
                     if (!expired)
                     {
-                        //
-                        // Lookup the user's account from the db.
-                        //
-                        if (username == "john")
+                        // Lookup the user's account from the db
+                        
+                        if (DatabaseModel.QueryExists("SELECT EXISTS(SELECT 1 FROM users WHERE username=@0);", username))
                         {
-                            string password = "password";
-                            // Hash the message with the key to generate a token.
-                            string computedToken = GenerateToken(username, password, userAgent, ticks);
-                            // Compare the computed token with the one supplied and ensure they match.
-                            result = (token == computedToken);
+                            string cmd = "SELECT password FROM users WHERE username=@username";
+                            string password = null;
+
+                            try
+                            {
+                                using (MySqlConnection conn = new MySqlConnection(_connectionString))
+                                using (MySqlCommand sqlCmd = new MySqlCommand(cmd, conn))
+                                {
+                                    conn.Open();
+                                    sqlCmd.Parameters.AddWithValue("@username", username);
+
+                                    using (MySqlDataReader dr = sqlCmd.ExecuteReader())
+                                    {
+                                        dr.Read();
+
+                                        password = dr.GetString(0);
+                                    }
+                                }
+
+                                // Hash the message with the key to generate a token.
+                                string computedToken = GenerateToken(username, password, userAgent, ticks);
+                                // Compare the computed token with the one supplied and ensure they match.
+                                result = (token == computedToken);
+                            }
+                            catch (Exception)
+                            {
+                                result = false;
+                            }
                         }
                     }
                 }
