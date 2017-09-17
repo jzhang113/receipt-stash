@@ -10,9 +10,9 @@ namespace ReceiptStash.Models
 
         public bool AddRecords(OrderModel order)
         {
-            string cmd = "INSERT INTO orders" +
-                "(id, store_id, item_name, item_price, quantity, card_type, card_number, date)" +
-                "values (@orderID, @storeID, @itemName, @itemPrice, @quantity, @cardType, @cardNumber, @date)";
+            string cmd = "INSERT INTO orders " +
+                "(id, store_id, item_name, item_price, quantity, card_type, card_number, date) " +
+                "values (@orderID, @storeID, @itemName, @itemPrice, @quantity, @cardType, @cardNumber, @date);";
 
             try
             {
@@ -44,12 +44,12 @@ namespace ReceiptStash.Models
 
         public bool TransferRecords(int userID, int orderID)
         {
-            if (!QueryExists("SELECT EXISTS(SELECT 1 FROM users WHERE id=@{0}", userID) || !QueryExists("SELECT EXISTS(SELECT 1 FROM orders WHERE id=@{0}", orderID))
+            if (!QueryExists("SELECT EXISTS(SELECT 1 FROM users WHERE id=@0);", userID) || !QueryExists("SELECT EXISTS(SELECT 1 FROM orders WHERE id=@0);", orderID))
                 return false;            
 
-            string cmd = "INSERT INTO userorders" +
-                "(user_id, order_id)" +
-                "values (@userID, @orderID)";
+            string cmd = "INSERT INTO userorders " +
+                "(user_id, order_id) " +
+                "values (@userID, @orderID);";
 
             try
             {
@@ -75,24 +75,24 @@ namespace ReceiptStash.Models
 
         public IEnumerable<OrderModel> GetRecords(int orderID)
         {
-            return Query("SELECT *" +
-                "FROM orders WHERE id=@{0};", orderID);
+            return Query("SELECT * " +
+                "FROM orders WHERE id=@0;", orderID);
         }
 
         public IEnumerable<OrderModel> GetAllRecords(int userID)
         {
-            return Query("SELECT *" +
-                "FROM userorders" +
-                "JOIN orders ON order_id = orders.id" +
-                "WHERE user_id=@{0};", userID);
+            return Query("SELECT orders.* " +
+                "FROM userorders " +
+                "JOIN orders ON order_id = orders.id " +
+                "WHERE user_id=@0;", userID);
         }
 
         public IEnumerable<OrderModel> GetRecentRecords(int userID, int orderID)
         {
-            return Query("SELECT *" +
-                "FROM userorders" +
-                "JOIN orders ON order_id = orders.id" +
-                "WHERE user_id=@{0} AND order_id > @{1};", userID, orderID);
+            return Query("SELECT orders.* " +
+                "FROM userorders " +
+                "JOIN orders ON order_id = orders.id " +
+                "WHERE user_id=@0 AND order_id>@1;", userID, orderID);
         }
 
         private IEnumerable<OrderModel> Query(string cmd, params dynamic[] args)
@@ -103,10 +103,10 @@ namespace ReceiptStash.Models
             using (MySqlCommand sqlCmd = new MySqlCommand(cmd, conn))
             {
                 conn.Open();
-
+                
                 for (int i = 0; i < args.Length; i++)
                 {
-                    sqlCmd.Parameters.AddWithValue("@{" + i + "}", args[i]);
+                    sqlCmd.Parameters.AddWithValue("@" + i, args[i]);
                 }
 
                 using (MySqlDataReader dr = sqlCmd.ExecuteReader())
@@ -140,7 +140,7 @@ namespace ReceiptStash.Models
 
                 for (int i = 0; i < args.Length; i++)
                 {
-                    sqlCmd.Parameters.AddWithValue("@{" + i + "}", args[i]);
+                    sqlCmd.Parameters.AddWithValue("@" + i, args[i]);
                 }
 
                 using (MySqlDataReader dr = sqlCmd.ExecuteReader())
@@ -148,7 +148,7 @@ namespace ReceiptStash.Models
                     // we should only have 1 row
                     dr.Read();
 
-                    if (dr.GetInt32(0) == 1)
+                    if (dr.GetBoolean(0))
                        return true;
                     else
                        return false;

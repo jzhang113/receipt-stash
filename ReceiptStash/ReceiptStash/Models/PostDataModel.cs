@@ -1,8 +1,7 @@
 ﻿namespace ReceiptStash.Models
 {
-    public class PostModel
+    public class PostDataModel
     {
         public int userID { get; set; }
-        public int orderID { get; set; }
     }
 }

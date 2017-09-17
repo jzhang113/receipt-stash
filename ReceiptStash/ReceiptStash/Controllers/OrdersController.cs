@@ -26,6 +26,7 @@ namespace ReceiptStash.Controllers
 
         // GET orders/1/1
         // Returns the order identified by orderID if the account identified by userID is authenticated
+        // Returns a failure if userID or orderID does not exist, or if userID does not own orderID
         [HttpGet("{userID}/{orderID}")]
         public string GetOrders(int userID, int orderID)
         {
@@ -37,6 +38,7 @@ namespace ReceiptStash.Controllers
 
         // GET orders/1
         // Returns all orders made by the account identified by userID
+        // Returns a failure if userID does not exist
         [HttpGet("{userID}")]
         public string GetAllOrders(int userID)
         {
@@ -46,6 +48,7 @@ namespace ReceiptStash.Controllers
 
         // GET orders/1/recent/3
         // Returns all orders made after the orderID given
+        // Returns a failure if userID does not exist
         [HttpGet("{userID}/recent/{lastOrderID}")]
         public string GetRecentOrders(int userID, int lastOrderID)
         {
@@ -55,11 +58,12 @@ namespace ReceiptStash.Controllers
 
         // POST orders
         // Adds the order identified by orderID to the account identified by userID if the account is authenticated
-        [HttpPost()]
-        public string LinkTransaction(int orderID, [FromBody]PostModel data)
+        // Returns a failure if either the userID or orderID does not exist
+        [HttpPost("{orderID}")]
+        public string LinkTransaction(int orderID, [FromBody]PostDataModel data)
         {
             IDatabaseModel database = new DatabaseModel();
-            if (database.TransferRecords(data.userID, data.orderID))
+            if (database.TransferRecords(data.userID, orderID))
                 return Success(null);
             else
                 return Failure();
